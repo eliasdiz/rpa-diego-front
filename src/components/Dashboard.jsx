@@ -8,10 +8,10 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/com
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Separator } from "@/components/ui/separator"
 
-export default function Dashboard() {
+export default function Dashboard({activeTab, setActiveTab}) {
 	const [service] = useState(false) 
 	const [newUsers] = useState(2) 
-	const [activeTab, setActiveTab] = useState("manual")
+	// const [activeTab,setActiveTab] = useState("manual")
 	const [schedule, setSchedule] = useState({
 		startTime: "09:00",
 	})
