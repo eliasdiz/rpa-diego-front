@@ -4,7 +4,7 @@ import Dashboard from './components/Dashboard';
 import { io } from 'socket.io-client';
 import toast from 'react-hot-toast';
 
-const socket = io('http://localhost:3000');
+const socket = io('http://localhost:8080');  // Conexión al backend
 
 export default function App() {
 	const [activeTab, setActiveTab] = useState("manual");
@@ -20,7 +20,10 @@ export default function App() {
 		socket.on('update-leads', ({ count }) => setContador(count));
 		socket.on('automatizacion-iniciada', () => setIsRunning(true));
 		socket.on('automatizacion-detenida', () => setIsRunning(false));
-		socket.on('login-fallido', () => setIsRunning(false));
+		socket.on('login-fallido', (mensajeError) => {
+			toast.error(mensajeError);  // Mostrar alerta de login fallido
+			setIsRunning(false);  // Detener la automatización
+		});
 
 		return () => {
 			socket.off('update-leads');
@@ -30,6 +33,7 @@ export default function App() {
 		};
 	}, []);
 
+	// Guardar la configuración (cantidad y hora)
 	const onGuardar = () => {
 		if (cantidad <= 0) {
 			toast.error("La cantidad de prospectos debe ser mayor que cero.");
@@ -56,7 +60,13 @@ export default function App() {
 		);
 	};
 
+	// Guardar las credenciales
 	const onGuardarCredenciales = () => {
+		if (!email || !password) {
+			toast.error('Por favor, ingresa un correo y una contraseña válidos');
+			return;
+		}
+
 		const payload = {
 			email,
 			passwordHash: password,
@@ -76,6 +86,7 @@ export default function App() {
 		);
 	};
 
+	// Iniciar la automatización
 	const iniciarAutomatizacion = () => {
 		if (cantidad <= 0) {
 			toast.error("Configura una cantidad válida de prospectos antes de iniciar.");
@@ -86,6 +97,7 @@ export default function App() {
 		setIsRunning(true);
 	};
 
+	// Detener la automatización
 	const detenerAutomatizacion = () => {
 		socket.emit('detener-automatizacion');
 		setIsRunning(false);
