@@ -136,6 +136,7 @@ export default function Dashboard({
 									<Button
 										onClick={onStart}
 										className="w-full border border-green-500/50 bg-green-900/10 hover:bg-green-900/20 text-green-500 py-4"
+										disabled={isRunning} // Añadimos esta propiedad para deshabilitar el botón cuando la automatización está en ejecución
 									>
 										<PlayIcon size={20} weight="duotone" />
 										Iniciar

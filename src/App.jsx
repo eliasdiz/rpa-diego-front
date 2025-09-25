@@ -4,7 +4,8 @@ import Dashboard from './components/Dashboard';
 import { io } from 'socket.io-client';
 import toast from 'react-hot-toast';
 
-const socket = io('https://rpa-diego-back-production.up.railway.app');  // Conexión al backend
+// const socket = io('https://rpa-diego-back-production.up.railway.app');  // Conexión al backend
+const socket = io('http://localhost:8080');  // Conexión al backend
 
 export default function App() {
 	const [activeTab, setActiveTab] = useState("manual");
